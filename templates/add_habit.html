@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <form class="form" method="POST">
+    <form class="form" method="POST" action="{{ url_for('habits.add_habit', date=selected_date.strftime('%Y-%m-%d')) }}">
         <textarea class="form__input" name="habit" id="habit" cols="30" rows="3" placeholder="Add a new daily habit"></textarea>
+        <input type="hidden" name="selected_date" value="{{ selected_date.strftime('%Y-%m-%d') }}">
         <button class="form__button" type="submit">Add</button>
     </form>
 {% endblock %}

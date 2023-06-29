@@ -4,27 +4,29 @@
     <section class="habit-list">
         {% for habit in habits %}
             {% set completed = habit["_id"] in completions %}
-                {% if completed  %}
-                    <div class="habit completed">
-                        <p class="habit__name">
-                            {{ habit["name"] }}
-                        </p>
-                        <svg class="habit__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                {% else %}
-                    <div class="habbit">
-                        <form method="POST" class="habbit__form" action="{{ url_for('habits.complete') }}">
+            <div class="habit{{ ' completed' if completed else '' }}">
+                <p class="habit__name{{ ' completed' if completed else '' }}">
+                    {{ habit["name"] }}
+                </p>                
+                {% if not completed %}
+                    <div class="habit__actions">
+                        <form method="POST" class="habit__form" action="{{ url_for('habits.complete') }}">
                             <input type="hidden" name="habitId" value="{{ habit['_id'] }}">
                             <input type="hidden" name="date" value="{{ selected_date }}">
-                            <button type="sumbit" class="habit__button">
-                                {{ habit["name"] }}
+                            <button type="submit" class="habit__confirm-button">
+                                <i class="fas fa-check"></i>
                             </button>
                         </form>
-
+                        <form method="POST" class="habit__form" action="{{ url_for('habits.delete_habit', habitId=habit['_id']) }}">
+                            <input type="hidden" name="date" value="{{ selected_date }}">
+                            <button type="submit" class="habit__delete-button">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                        
                     </div>
-                {% endif%}
-        {% endfor%}
+                {% endif %}
+            </div>
+        {% endfor %}
     </section>
 {% endblock %}
